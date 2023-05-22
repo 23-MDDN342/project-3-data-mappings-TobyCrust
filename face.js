@@ -7,13 +7,16 @@
 var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
-var NUM_SLIDERS = 3;
+var NUM_SLIDERS = 6;
 
 // other variables can be in here too
 // here's some examples for colors used
 
 
 const stroke_color = [95, 52, 8];
+const snakeskin = [154,189,68];
+const snakeEyes = [239,219,63];
+
 
 // example of a global function
 // given a segment, this returns the average point [x, y]
@@ -40,26 +43,127 @@ function Face() {
 
   this.chinColour = [153, 153, 51]
   this.lipColour = [136, 68, 68]
-  this.eyebrowColour = [119, 85, 17]
+  this.eyebrowColour = [319, 85, 17]
+  this.pupilColour = [11, 235, 17]
+ 
+  this.pupilsize = 0.1;
+  this.fangLength = 0.5;
+  this.fangWidth = 0;
 
   /*
-   * Draw the face with position lists that include:
+   * Draw the face with position lists that include:nos
    *    chin, right_eye, left_eye, right_eyebrow, left_eyebrow
    *    bottom_lip, top_lip, nose_tip, nose_bridge, 
    */  
   this.draw = function(positions) {
-    console.log()
+    
     // head
     ellipseMode(CENTER);
     stroke(stroke_color);
-    fill(this.mainColour);
+    fill(snakeskin);
     ellipse(segment_average(positions.chin)[0], 0, 3, 4);
     noStroke();
 
 
     // mouth
     fill(this.detailColour);
-    ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
+    // ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);// ellipse mouth
+    noFill();
+    strokeWeight(0.08);
+    stroke(0);
+    // arc(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1]-1, 2, 2, 40, 145); // mouth
+    strokeWeight(0.04);
+    // triangle(segment_average(positions.bottom_lip)[0]+0.1, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]+0.4, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]+0.15, segment_average(positions.bottom_lip)[1]+0.5);
+    // triangle(segment_average(positions.bottom_lip)[0]-0.5, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]+0.3-0.5, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]-0.35, segment_average(positions.bottom_lip)[1]+0.5);
+
+
+    // console.log(segment_average(positions.bottom_lip));
+
+    if (positions.bottom_lip > 0.01){
+      positions.bottom_lip = 0;
+    }
+
+
+
+    
+
+
+    push();
+    strokeWeight(0.05);
+    fill(255,100,100);
+    beginShape();
+    curveVertex(positions.top_lip[0][0],positions.top_lip[0][1]); //curve point
+    
+    curveVertex(positions.top_lip[0][0],positions.top_lip[0][1]); // first point
+    
+
+    
+     //middle point
+
+
+    curveVertex(positions.bottom_lip[4][0],positions.bottom_lip[4][1]); //middle left point
+
+    vertex(positions.bottom_lip[2][0],positions.bottom_lip[2][1]);
+
+    curveVertex(positions.bottom_lip[2][0],positions.bottom_lip[2][1]); //middle point
+
+    vertex(positions.bottom_lip[2][0],positions.bottom_lip[2][1]);
+
+    curveVertex(positions.bottom_lip[0][0],positions.bottom_lip[0][1]); //third point
+
+
+    curveVertex(positions.bottom_lip[0][0],positions.bottom_lip[0][1]); //end curve point
+
+    
+    
+    
+    endShape();
+    pop();
+
+
+
+
+
+    strokeWeight(0.03);
+    fill(255);
+    push(); // right fang
+    beginShape();
+  
+    vertex(segment_average(positions.bottom_lip)[0]+0.1+this.fangWidth, segment_average(positions.bottom_lip)[1]+0.05);// left point
+    vertex(segment_average(positions.bottom_lip)[0]+0.2, segment_average(positions.chin)[1]+0.5); // fang tip
+    vertex(segment_average(positions.bottom_lip)[0]+0.4, segment_average(positions.bottom_lip)[1]-0.04);//right point
+    endShape();
+
+//positions. chin = the width of the chin
+
+
+    pop();
+
+
+
+    push(); // left fang
+    beginShape();
+  
+    vertex(positions.top_lip[0][0]+0.2, positions.top_lip[0][1]);// left point
+    vertex(segment_average(positions.top_lip)[0]-0.35, segment_average(positions.chin)[1]+0.5); // fang tip
+    vertex(positions.top_lip[10][0], segment_average(positions.top_lip)[1]); //right point
+    endShape();
+  
+
+    pop();
+
+
+    
+
+    
+
+    let holeSize = 0.1;
+    this.nose_hole = positions.nose_tip[2][0]
+    this.nose_hole2 = positions.nose_tip[0][1]
+
+    ellipse(positions.nose_tip[1][0],this.nose_hole2,holeSize,holeSize);
+     ellipse(positions.nose_tip[3][0],this.nose_hole2,holeSize,holeSize);
+
 
     // eyebrows
     fill( this.eyebrowColour);
@@ -87,14 +191,26 @@ function Face() {
 
     let left_eye_pos = segment_average(positions.left_eye);
     let right_eye_pos = segment_average(positions.right_eye);
+    this.slit_height = positions.right_eye[0][1]
+    this.slit_bottom = positions.right_eye[0][1]
+    
+
+    
+  //  console.log(this.slit_height);
+
 
     // eyes
     noStroke();
     let curEyeShift = 0.04 * this.eye_shift;
     if(this.num_eyes == 2) {
-      fill(this.detailColour);
-      ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.33);
-      ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.33);
+      fill(snakeEyes);
+      ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, this.slit_height*2+2.1); //eyes
+      ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, this.slit_height*2+2.1);
+      fill(this.pupilColour);
+      ellipse(right_eye_pos[0], right_eye_pos[1], this.pupilsize, this.slit_height*2+2.1);// cat eyes
+      ellipse(left_eye_pos[0], left_eye_pos[1], this.pupilsize, this.slit_height*2+2.1);
+      
+      
 
       // fill(this.mainColour);
       // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
@@ -107,8 +223,9 @@ function Face() {
       fill(this.detailColour);
       ellipse(eyePosX, eyePosY, 0.45, 0.27);
 
-      fill(this.mainColour);
+      fill(this.pupilColour);
       ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
+      ellipse(eyePosX - 0.7 + curEyeShift, eyePosY, 0.18);
     }
    // fill(0)
    //ellipse(0,0, 0.5,0.5) center point
@@ -138,16 +255,23 @@ function Face() {
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
     this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
-    this.eye_shift = map(settings[1], 0, 100, -2, 2);
+    this.eye_shift = map(settings[1], 0, 100, -2, 6);
     this.mouth_size = map(settings[2], 0, 100, 0.5, 8);
+    this.pupilsize = map(settings[3], 0, 100, 0, 0.25);
+    this.fangLength = map(settings[4], 0, 100, 0, 0.5);
+    this.fangWidth = map(settings[5], 0, 100, 0.2, -0.2);
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
-    let settings = new Array(3);
+    let settings = new Array(6);
     settings[0] = map(this.num_eyes, 1, 2, 0, 100);
     settings[1] = map(this.eye_shift, -2, 2, 0, 100);
     settings[2] = map(this.mouth_size, 0.5, 8, 0, 100);
+    settings[3] = map(this.pupilsize, 0, 0.25, 0, 100);
+    settings[4] = map(this.fangLength, 0, 0.5, 0, 100);
+    settings[5] = map(this.fangWidth, -0.2, 0.2, 0, 100);
+    
     return settings;
   }
 }
