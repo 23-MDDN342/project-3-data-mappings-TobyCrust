@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -85,70 +85,76 @@ function Face() {
 
 
 
-    
+//  
+//-----------------------------bottom snake mouth------------------------------------
 
+    push();
+    strokeWeight(0.05);
+    fill(255,100,100);
+    beginShape();
+    curveVertex(positions.bottom_lip[7][0],positions.bottom_lip[7][1]); //curve point
+    curveVertex(positions.bottom_lip[7][0],positions.bottom_lip[7][1]); // first point
+
+    curveVertex(positions.bottom_lip[8][0],positions.bottom_lip[8][1]); //middle left curve point
+    vertex(positions.bottom_lip[8][0],positions.bottom_lip[8][1]); //middle left point
+
+    curveVertex(positions.bottom_lip[10][0],positions.bottom_lip[10][1]); //middle point
+    vertex(positions.bottom_lip[10][0],positions.bottom_lip[10][1]);
+
+    curveVertex(positions.bottom_lip[0][0],positions.bottom_lip[0][1]); //third point
+    curveVertex(positions.bottom_lip[0][0],positions.bottom_lip[0][1]); //end curve point
+    
+    endShape();
+    pop();
+
+
+
+//-------------------------top snake mouth ---------------------------------
+
+  // ellipse(positions.top_lip[7][0],positions.top_lip[7][1],0.2,0.2)
 
     push();
     strokeWeight(0.05);
     fill(255,100,100);
     beginShape();
     curveVertex(positions.top_lip[0][0],positions.top_lip[0][1]); //curve point
-    
     curveVertex(positions.top_lip[0][0],positions.top_lip[0][1]); // first point
-    
 
-    
-     //middle point
+    curveVertex(positions.top_lip[10][0],positions.top_lip[10][1]); //middle left curve point
+    vertex(positions.top_lip[10][0],positions.top_lip[10][1]); //middle left point
 
+    curveVertex(positions.top_lip[8][0],positions.top_lip[8][1]); //middle point
+    vertex(positions.top_lip[8][0],positions.top_lip[8][1]);
 
-    curveVertex(positions.bottom_lip[4][0],positions.bottom_lip[4][1]); //middle left point
-
-    vertex(positions.bottom_lip[2][0],positions.bottom_lip[2][1]);
-
-    curveVertex(positions.bottom_lip[2][0],positions.bottom_lip[2][1]); //middle point
-
-    vertex(positions.bottom_lip[2][0],positions.bottom_lip[2][1]);
-
-    curveVertex(positions.bottom_lip[0][0],positions.bottom_lip[0][1]); //third point
-
-
-    curveVertex(positions.bottom_lip[0][0],positions.bottom_lip[0][1]); //end curve point
-
-    
-    
+    curveVertex(positions.top_lip[7][0],positions.top_lip[7][1]); //third point
+    curveVertex(positions.top_lip[7][0],positions.top_lip[7][1]); //end curve point
     
     endShape();
     pop();
 
 
-
-
+    // ellipse(positions.top_lip[10][0], positions.top_lip[10][1],0.3,0.3)
 
     strokeWeight(0.03);
     fill(255);
     push(); // right fang
     beginShape();
   
-    vertex(segment_average(positions.bottom_lip)[0]+0.1+this.fangWidth, segment_average(positions.bottom_lip)[1]+0.05);// left point
-    vertex(segment_average(positions.bottom_lip)[0]+0.2, segment_average(positions.chin)[1]+0.5); // fang tip
-    vertex(segment_average(positions.bottom_lip)[0]+0.4, segment_average(positions.bottom_lip)[1]-0.04);//right point
+    vertex(positions.top_lip[8][0], positions.top_lip[8][1]);// left point
+    vertex(segment_average(positions.top_lip)[0]+0.35, segment_average(positions.chin)[1]+0.5); // fang tip
+    vertex(positions.top_lip[8][0]+0.2, positions.top_lip[8][1]+0.05);//right point
     endShape();
 
 //positions. chin = the width of the chin
-
-
     pop();
-
-
 
     push(); // left fang
     beginShape();
   
-    vertex(positions.top_lip[0][0]+0.2, positions.top_lip[0][1]);// left point
+    vertex(positions.top_lip[10][0]-0.2, positions.top_lip[10][1]+0.05);// left point
     vertex(segment_average(positions.top_lip)[0]-0.35, segment_average(positions.chin)[1]+0.5); // fang tip
-    vertex(positions.top_lip[10][0], segment_average(positions.top_lip)[1]); //right point
+    vertex(positions.top_lip[10][0], positions.top_lip[10][1]); //right point
     endShape();
-  
 
     pop();
 
@@ -165,29 +171,29 @@ function Face() {
      ellipse(positions.nose_tip[3][0],this.nose_hole2,holeSize,holeSize);
 
 
-    // eyebrows
-    fill( this.eyebrowColour);
-    stroke( this.eyebrowColour);
-    strokeWeight(0.08);
-    this.draw_segment(positions.left_eyebrow);
-    this.draw_segment(positions.right_eyebrow);
+    //eyebrows
+    // fill( this.eyebrowColour);
+    // stroke( this.eyebrowColour);
+    // strokeWeight(0.08);
+    // this.draw_segment(positions.left_eyebrow);
+    // this.draw_segment(positions.right_eyebrow);
 
-    // draw the chin segment using points
-    fill(this.chinColour);
-    stroke(this.chinColour);
-    this.draw_segment(positions.chin);
+    // // draw the chin segment using points
+    // fill(this.chinColour);
+    // stroke(this.chinColour);
+    // this.draw_segment(positions.chin);
 
-    fill(100, 0, 100);
-    stroke(100, 0, 100);
-    this.draw_segment(positions.nose_bridge);
-    this.draw_segment(positions.nose_tip);
+    // fill(100, 0, 100);
+    // stroke(100, 0, 100);
+    // this.draw_segment(positions.nose_bridge);
+    // this.draw_segment(positions.nose_tip);
 
-    strokeWeight(0.03);
+    // strokeWeight(0.03);
 
-    fill(this.lipColour);
-    stroke(this.lipColour);
-    this.draw_segment(positions.top_lip);
-    this.draw_segment(positions.bottom_lip);
+    // fill(this.lipColour);
+    // stroke(this.lipColour);
+    // this.draw_segment(positions.top_lip);
+    // this.draw_segment(positions.bottom_lip);
 
     let left_eye_pos = segment_average(positions.left_eye);
     let right_eye_pos = segment_average(positions.right_eye);
