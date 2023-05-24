@@ -96,7 +96,7 @@ function Face() {
     
     //----------------------------------snake tongue------------------------------
     push()
-    fill(235, 0, 0, this.tongueFill+255)
+    fill(235, 0, 255, this.tongueFill+255)
     beginShape()
     vertex(positions.bottom_lip[8][0] + 0, positions.bottom_lip[8][1]+0)
     vertex(positions.bottom_lip[8][0] + 0, positions.bottom_lip[8][1]+ -this.eyebrowSpike + 0.4)
