@@ -4,7 +4,7 @@
  */
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 7;
@@ -14,7 +14,7 @@ var NUM_SLIDERS = 7;
 
 
 const stroke_color = [95, 52, 8];
-const snakeskin = [154, 189, 68];
+const snakeskin = [154, 189, 68, 100];
 const snakeEyes = [239, 219, 63];
 
 
@@ -76,35 +76,76 @@ function Face() {
     // triangle(segment_average(positions.bottom_lip)[0]+0.1, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]+0.4, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]+0.15, segment_average(positions.bottom_lip)[1]+0.5);
     // triangle(segment_average(positions.bottom_lip)[0]-0.5, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]+0.3-0.5, segment_average(positions.bottom_lip)[1], segment_average(positions.bottom_lip)[0]-0.35, segment_average(positions.bottom_lip)[1]+0.5);
 
+//-----------------------------------snake chin-------------------------------------
+    //goes from 0-16
+    push()
+    ellipse(positions.chin[16][0], positions.chin[16][1], 0.2, 0.2)
 
+    fill(this.chinColour);
+    stroke(this.chinColour);
+    beginShape();
+    // vertex(positions.chin[0][0], positions.chin[0][1])
+    // vertex(positions.left_eye[0][0]-0.1, positions.left_eye[0][1]-0.2)
+    // vertex(positions.left_eye[0][0]+0.3, positions.left_eye[0][1]-0.4)
+    this.draw_segment(positions.chin);
+    vertex(positions.chin[16][0]+0.3, positions.chin[16][1]-0.4)
+    endShape()
+    
+
+    beginShape()
+
+    fill(this.chinColour);
+    stroke(this.chinColour);
+    vertex(positions.chin[0][0], positions.chin[0][1])
+    vertex(positions.chin[1][0], positions.chin[1][1])
+    vertex(positions.chin[2][0], positions.chin[2][1])
+    vertex(positions.chin[3][0], positions.chin[3][1])
+    vertex(positions.chin[4][0], positions.chin[4][1])
+    vertex(positions.chin[5][0], positions.chin[5][1])
+    vertex(positions.chin[6][0], positions.chin[6][1])
+    vertex(positions.chin[7][0], positions.chin[7][1])
+    vertex(positions.chin[8][0], positions.chin[8][1])
+    vertex(positions.chin[9][0], positions.chin[9][1])
+    vertex(positions.chin[10][0], positions.chin[10][1])
+    vertex(positions.chin[11][0], positions.chin[11][1])
+    vertex(positions.chin[12][0], positions.chin[12][1])
+    vertex(positions.chin[13][0], positions.chin[13][1])
+    vertex(positions.chin[14][0], positions.chin[14][1])
+    vertex(positions.chin[15][0], positions.chin[15][1])
+    vertex(positions.chin[16][0], positions.chin[16][1])
+    vertex(positions.right_eye[2][0], positions.right_eye[0][1]-0.5)
+    vertex(positions.left_eye[2][0], positions.left_eye[0][1]-0.5)
+
+    endShape()
+
+    pop()
     // console.log(segment_average(positions.bottom_lip));
+    //----------------------------------snake tongue----------------------------------------------------------------------------------
 
     if (positions.bottom_lip > 0.01) {
       positions.bottom_lip = 0;
     }
 
-    console.log(this.eyebrowSpike)
 
     this.middleTongue = segment_average([positions.bottom_lip[8], positions.bottom_lip[10]])
 
     this.tongueFill = 0
 
-    if (this.eyebrowSpike> 0.35){
+    if (this.eyebrowSpike > 0.35) {
 
-    this.tongueFill = -255
+      this.tongueFill = -255
     }
-    
-    //----------------------------------snake tongue------------------------------
+
     push()
-    fill(235, 0, 255, this.tongueFill+255)
+    fill(235, 0, 255, this.tongueFill + 255)
     beginShape()
-    vertex(positions.bottom_lip[8][0] + 0, positions.bottom_lip[8][1]+0)
-    vertex(positions.bottom_lip[8][0] + 0, positions.bottom_lip[8][1]+ -this.eyebrowSpike + 0.4)
-    vertex(positions.bottom_lip[8][0] + -0.1, positions.bottom_lip[8][1]+-this.eyebrowSpike + 0.6)
-    vertex(positions.bottom_lip[9][0], positions.bottom_lip[8][1]+ -this.eyebrowSpike + 0.4)
-    vertex(positions.bottom_lip[10][0] +0.1, positions.bottom_lip[10][1]+-this.eyebrowSpike + 0.6)
-    vertex(positions.bottom_lip[10][0] , positions.bottom_lip[10][1]+-this.eyebrowSpike + 0.4)
-    vertex(positions.bottom_lip[10][0] , positions.bottom_lip[10][1]+0)
+    vertex(positions.bottom_lip[8][0] + 0, positions.bottom_lip[8][1] + 0)
+    vertex(positions.bottom_lip[8][0] + 0, positions.bottom_lip[8][1] + -this.eyebrowSpike + 0.4)
+    vertex(positions.bottom_lip[8][0] + -0.1, positions.bottom_lip[8][1] + -this.eyebrowSpike + 0.6)
+    vertex(positions.bottom_lip[9][0], positions.bottom_lip[8][1] + -this.eyebrowSpike + 0.4)
+    vertex(positions.bottom_lip[10][0] + 0.1, positions.bottom_lip[10][1] + -this.eyebrowSpike + 0.6)
+    vertex(positions.bottom_lip[10][0], positions.bottom_lip[10][1] + -this.eyebrowSpike + 0.4)
+    vertex(positions.bottom_lip[10][0], positions.bottom_lip[10][1] + 0)
     endShape()
 
     pop()
@@ -112,18 +153,18 @@ function Face() {
 
 
 
-    //--------------------------------left eyebrow-------------------------------
+    //--------------------------------left eyebrow-----------------------------------------------------------------------------------
     beginShape();
     vertex(positions.left_eyebrow[0][0], positions.left_eyebrow[0][1]);
     curveVertex(positions.left_eyebrow[0][0], positions.left_eyebrow[0][1])
 
 
-    curveVertex(positions.left_eyebrow[1][0], positions.left_eyebrow[1][1] + this.eyebrowSpike/2)
+    curveVertex(positions.left_eyebrow[1][0], positions.left_eyebrow[1][1] + this.eyebrowSpike / 2)
 
 
     curveVertex(positions.left_eyebrow[2][0], positions.left_eyebrow[2][1])
 
-    curveVertex(positions.left_eyebrow[3][0], positions.left_eyebrow[3][1] + this.eyebrowSpike/2)
+    curveVertex(positions.left_eyebrow[3][0], positions.left_eyebrow[3][1] + this.eyebrowSpike / 2)
     curveVertex(positions.left_eyebrow[3][0], positions.left_eyebrow[3][1])
 
     curveVertex(positions.left_eyebrow[4][0], positions.left_eyebrow[4][1])
@@ -131,28 +172,28 @@ function Face() {
 
     endShape();
 
-    //--------------------------------right eyebrow-------------------------------
+    //--------------------------------right eyebrow-------------------------------------------------------------------------------
     beginShape();
     vertex(positions.right_eyebrow[0][0], positions.right_eyebrow[0][1]);
     curveVertex(positions.right_eyebrow[0][0], positions.right_eyebrow[0][1])
 
 
-    curveVertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1] + this.eyebrowSpike/2)
-    curveVertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1] + this.eyebrowSpike/2)
+    curveVertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1] + this.eyebrowSpike / 2)
+    curveVertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1] + this.eyebrowSpike / 2)
 
 
     curveVertex(positions.right_eyebrow[2][0], positions.right_eyebrow[2][1])
     curveVertex(positions.right_eyebrow[2][0], positions.right_eyebrow[2][1])
 
-    curveVertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1] + this.eyebrowSpike/2)
-    curveVertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1] + this.eyebrowSpike/2)
+    curveVertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1] + this.eyebrowSpike / 2)
+    curveVertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1] + this.eyebrowSpike / 2)
 
     curveVertex(positions.right_eyebrow[4][0], positions.right_eyebrow[4][1])
     curveVertex(positions.right_eyebrow[4][0], positions.right_eyebrow[4][1])
 
     endShape();
     //  
-    //-----------------------------bottom snake mouth------------------------------------
+    //-----------------------------bottom snake mouth--------------------------------------------------------------------------------
 
     push();
     strokeWeight(0.05);
@@ -197,7 +238,7 @@ function Face() {
     endShape();
     pop();
 
-    
+
     this.toothy = positions.bottom_lip[8][1] - positions.top_lip[10][1]
     if (this.toothy < 0.1) {
       this.toothy = 0
@@ -242,7 +283,7 @@ function Face() {
 
 
 
-    //-----------------------------------right fang--------------------------
+    //-----------------------------------right fang-------------------------------------------------------------------------------------
     beginShape();
     vertex(positions.top_lip[8][0], positions.top_lip[8][1]);// left point
     // vertex(segment_average(positions.top_lip)[0], segment_average(positions.chin)[1]+0.5); // fang tip
@@ -261,7 +302,7 @@ function Face() {
 
 
     // ellipse(positions.top_lip[11][0], positions.top_lip[11][1], 0.2, 0.2)
-    //------------------------------right fang---------------------------------------------------
+    //------------------------------right fang-------------------------------------------------------------------------------------
     beginShape();
 
     vertex(this.leftMostPoint_LF[0], this.leftMostPoint_LF[1]);// left point
@@ -308,28 +349,39 @@ function Face() {
     // this.draw_segment(positions.top_lip);
     // this.draw_segment(positions.bottom_lip);
 
-    let left_eye_pos = segment_average(positions.left_eye);
-    let right_eye_pos = segment_average(positions.right_eye);
-    this.slit_height = positions.right_eye[0][1]
-    this.slit_bottom = positions.right_eye[0][1]
+   
+    
 
 
 
     //  console.log(this.slit_height);
 
 
-    // eyes
+    // -----------------------------------------------------------------eyes---------------------------------------------------------
+   
+    // console.log(this.m);
+
+    this.m = map(this.slit_height, 0, 2, 0, 5);
+
+    let left_eye_pos = segment_average(positions.left_eye);
+    let right_eye_pos = segment_average(positions.right_eye);
+    this.slit_height = positions.right_eye[4][1] - positions.right_eye[2][1]
+    this.slit_bottom = positions.right_eye[0][1]
+    this.eyeee = 1
+   
     noStroke();
     let curEyeShift = 0.04 * this.eye_shift;
     if (this.num_eyes == 2) {
       fill(snakeEyes);
-      ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, this.slit_height * 2 + 2.1); //eyes
-      ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, this.slit_height * 2 + 2.1);
+      ellipse(left_eye_pos[0], left_eye_pos[1], 0.35, this.m/this.eyeee); //eyes
+      ellipse(right_eye_pos[0], right_eye_pos[1], 0.65, this.slit_height/this.eyeee);
       fill(this.pupilColour);
-      ellipse(right_eye_pos[0], right_eye_pos[1], this.pupilsize, this.slit_height * 2 + 2.1);// cat eyes
-      ellipse(left_eye_pos[0], left_eye_pos[1], this.pupilsize, this.slit_height * 2 + 2.1);
+      ellipse(right_eye_pos[0], right_eye_pos[1], this.pupilsize, this.slit_height/this.eyeee);// cat eyes
+      ellipse(left_eye_pos[0], left_eye_pos[1], this.pupilsize, this.slit_height/this.eyeee);
 
 
+      
+     
 
       // fill(this.mainColour);
       // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
@@ -340,15 +392,14 @@ function Face() {
       let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
 
       fill(this.detailColour);
-      ellipse(eyePosX, eyePosY, 0.45, 0.27);
+      // ellipse(eyePosX, eyePosY, 0.45, 0.27);
 
       fill(this.pupilColour);
       ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
       ellipse(eyePosX - 0.7 + curEyeShift, eyePosY, 0.18);
     }
     // fill(0)
-    //ellipse(0,0, 0.5,0.5) center point
-    //rect(-2,-2,4.5,4) sizing debug 
+
   }
 
   // example of a function *inside* the face object.
@@ -391,7 +442,8 @@ function Face() {
     settings[3] = map(this.pupilsize, 0, 0.25, 0, 100);
     settings[4] = map(this.fangLength, 0.8, 1.4, 0, 100);
     settings[5] = map(this.fangWidth, -0.2, 0.2, 0, 100);
-    settings[6] = map(this.eyebrowSpike, 0, -0.6, 0.4, 100);
+    settings[6] = map(this.eyebrowSpike, 0, -0.6, 0, 100);
+    
 
 
     return settings;
