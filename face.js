@@ -53,8 +53,6 @@ function Face() {
 
   this.browColourArray = [color(5, 209, 240), color(239, 219, 63), color(198, 174, 130), color(86, 53, 30)]
 
-  
-
   this.draw = function (positions) {
 
     noFill();
@@ -102,14 +100,14 @@ function Face() {
     endShape()
 
     pop()
-    // console.log(segment_average(positions.bottom_lip));
+   
     //-----------------------------------------------------------------snake tongue----------------------------------------------------------------------------------
 
     if (positions.bottom_lip > 0.01) {
       positions.bottom_lip = 0;
     }
 
-    // this.slim = 0.1
+   
     this.middleTongue = segment_average([positions.bottom_lip[8], positions.bottom_lip[10]])
 
     this.tongueFill = 0
@@ -126,6 +124,7 @@ function Face() {
     }
 
     this.tongueColourArray = [color(235, 0, 255, this.tongueFill + 255), color(239, 9, 3, this.tongueFill + 255)]
+  
 
     push()
     fill(this.tongueColourArray[this.tonguecolor])
@@ -314,7 +313,7 @@ function Face() {
     this.eyeMiddleTop = segment_average([positions.left_eye[1], positions.left_eye[2]])
     this.eyeMiddleDown = segment_average([positions.left_eye[4], positions.left_eye[5]])
 
-    console.log(this.eyeMiddleTop[1] - this.eyeMiddleDown[1] / 2)
+  
     this.eyeHeight = segment_average([positions.left_eye[4], positions.left_eye[2]])
 
     // eyes
@@ -331,9 +330,10 @@ function Face() {
 
     }
 
+   
     else {
-      let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
-      let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
+      let eyePosX = (right_eye_pos[0]/4 - left_eye_pos[0]/4);
+      let eyePosY = (left_eye_pos[1]);
 
       fill(this.detailColour);
       // ellipse(eyePosX, eyePosY, 0.45, 0.27);
@@ -346,118 +346,32 @@ function Face() {
 
   }
 
-  this.draw_segment = function (segment, do_loop) {
-    for (let i = 0; i < segment.length; i++) {
-      let px = segment[i][0];
-      let py = segment[i][1];
-      ellipse(px, py, 0.1);
-      if (i < segment.length - 1) {
-        let nx = segment[i + 1][0];
-        let ny = segment[i + 1][1];
-        line(px, py, nx, ny);
-      }
-      else if (do_loop) {
-        let nx = segment[0][0];
-        let ny = segment[0][1];
-        line(px, py, nx, ny);
-      }
-    }
-
-
-    function draw() {
-      // Set colors
-      const backgroundColor = color(220);
-      const scaleColors = [
-        color(80, 143, 66),    // Dark green
-        color(109, 164, 81),   // Medium green
-        color(140, 185, 96),   // Light green
-        color(108, 93, 78),    // Dark brown
-        color(138, 117, 97)    // Light brown
-      ];
-
-      // Set scale properties
-      const scaleWidth = 20;
-      const scaleHeight = 30;
-      const scaleXGap = -10; // Gap in the x direction
-      const scaleYGap = -10; // Gap in the y direction
-
-      // Set number of scale clusters and their positions
-      const numClusters = 4;
-      const clusterPositions = [
-        { x: canvasWidth / 4, y: canvasHeight / 4 },
-        { x: (canvasWidth * 3) / 4, y: canvasHeight / 4 },
-        { x: canvasWidth / 4, y: (canvasHeight * 3) / 4 },
-        { x: (canvasWidth * 3) / 4, y: (canvasHeight * 3) / 4 }
-      ];
-
-      // Repeat pattern
-      const patternX = [0, 1, 2]; // X positions of the repeating pattern
-      const patternY = [0, 1, 2]; // Y positions of the repeating pattern
-
-      // Draw scales
-      for (let clusterIndex = 0; clusterIndex < numClusters; clusterIndex++) {
-        const clusterPos = clusterPositions[clusterIndex];
-
-        for (let i = 0; i < scaleWidth * 2; i += scaleWidth + scaleXGap) {
-          const patternIndexX = patternX[i / (scaleWidth + scaleXGap) % patternX.length];
-
-          for (let j = 0; j < scaleHeight * 2; j += scaleHeight + scaleYGap) {
-            const patternIndexY = patternY[j / (scaleHeight + scaleYGap) % patternY.length];
-
-            const x = clusterPos.x + i + patternIndexX * (scaleWidth + scaleXGap);
-            const y = clusterPos.y + j + patternIndexY * (scaleHeight + scaleYGap);
-
-            const randomScaleColorIndex = floor(random(scaleColors.length));
-            const scaleColor = scaleColors[randomScaleColorIndex];
-
-            drawScale(x + scaleWidth, y, -scaleWidth, scaleHeight, scaleColor);
-          }
-        }
-      }
-    }
-
-    function drawScale(x, y, width, height, color) {
-      push();
-      translate(x, y);
-
-      // Draw scale shape
-      fill(color);
-      beginShape();
-      vertex(0, 0);
-      bezierVertex(0, height, width, height, width, 0);
-      endShape(CLOSE);
-      ellipse(width, height, 0.1, 0.2)
-      pop();
-      console.log(width)
-    }
-
-  };
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function (settings) {
     this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
-    this.browcolor = int(map(settings[1], 0, 100, 0, 3));
-    this.tonguecolor = int(map(settings[2], 0, 100, 0, 1));
+    this.browcolor = int(map(settings[1], 0, 100, 3, 0));
+    this.tonguecolor = int(map(settings[2], 0, 100, 1, 0));
     this.pupilsize = map(settings[3], 0, 100, 0, 0.35);
     this.fangLength = map(settings[4], 0, 100, 1.4, 0.8);
-    this.tongueLength = map(settings[5], 0, 100, 0.6, 0);
+    this.tongueLength = map(settings[5], 0, 100, 0, 0.6);
     this.eyebrowSpike = map(settings[6], 0, 100, 0, -0.2);
-    this.slim = map(settings[7], 0, 100, 0.1, 0);
-    this.facecolor = int(map(settings[8], 0, 100, 0, 9));
+    this.slim = map(settings[7], 0, 100, 0, 0.1);
+    this.facecolor = int(map(settings[8], 0, 100, 9, 0));
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function () {
-    let settings = new Array(8);
+    let settings = new Array(9);
     settings[0] = map(this.num_eyes, 1, 2, 0, 100);
-    settings[1] = int(map(this.browcolor, 3, 0, 0, 100));
-    settings[2] = int(map(this.tonguecolor, 1, 0, 0, 100));
+    settings[1] = int(map(this.browcolor, 0, 3, 0, 100));
+    settings[2] = int(map(this.tonguecolor, 0, 1, 0, 100));
     settings[3] = map(this.pupilsize, 0, 0.35, 0, 100);
     settings[4] = map(this.fangLength, 0.8, 1.4, 0, 100);
-    settings[5] = map(this.tongueLength, 0, 0.6, 0, 100);
+    settings[5] = map(this.tongueLength, 0.6, 0, 0, 100);
     settings[6] = map(this.eyebrowSpike, 0, -0.2, 0, 100);
-    settings[7] = map(this.slim, 0, 0.1, 0, 100);
-    settings[8] = int(map(this.facecolor, 9, 0, 0, 100));
+    settings[7] = map(this.slim, 0.1, 0, 0, 100);
+    settings[8] = int(map(this.facecolor, 0, 9, 0, 100));
 
     return settings;
   }
