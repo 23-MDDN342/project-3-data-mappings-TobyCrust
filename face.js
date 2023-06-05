@@ -4,7 +4,7 @@
  */
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 9;
@@ -43,11 +43,17 @@ function Face() {
   this.pupilsize = 0.1;
   this.fangLength = 0.5;
   this.fangWidth = 0;
-  this.facecolor = 0;
+  this.tongueFill = 0;
 
   this.facecolor = 4;
-  this.scaleColourArray = [color(195, 179, 104), color(105, 183, 212), color(195, 99, 85), color(65, 152, 167), color(80, 143, 66), color(109, 164, 81), color(140, 185, 96), color(108, 93, 78), color(138, 117, 97), color(158, 107, 67)]
- 
+  this.browcolor = 1;
+  this.tonguecolor = 1;
+
+  this.scaleColourArray = [color(195, 179, 104), color(105, 183, 212), color(195, 99, 85), color(219,186,34), color(53,62,60), color(228,229,231), color(140, 185, 96), color(108, 93, 78), color(138, 117, 97), color(158, 107, 67)]
+
+  this.browColourArray = [color(5, 209, 240), color(239, 219, 63), color(198, 174, 130), color(86, 53, 30)]
+
+  
 
   this.draw = function (positions) {
 
@@ -107,7 +113,7 @@ function Face() {
     this.middleTongue = segment_average([positions.bottom_lip[8], positions.bottom_lip[10]])
 
     this.tongueFill = 0
-    this.tongueStroke = 0.05
+    
 
     if (this.eyebrowSpike > 0.35) {
 
@@ -116,19 +122,21 @@ function Face() {
 
     if (this.tongueLength > 0.43) {
       this.tongueFill = -255
-      this.tongueStroke = 0
+     
     }
 
+    this.tongueColourArray = [color(235, 0, 255, this.tongueFill + 255), color(239, 9, 3, this.tongueFill + 255)]
+
     push()
-    fill(235, 0, 255, this.tongueFill + 255)
+    fill(this.tongueColourArray[this.tonguecolor])
     strokeWeight(0)
     beginShape()
     vertex(positions.bottom_lip[8][0] + 0 + this.slim, positions.bottom_lip[8][1] + 0)
-    vertex(positions.bottom_lip[8][0] + 0 + this.slim, positions.bottom_lip[8][1] + -this.eyebrowSpike + 0.4 - this.tongueLength)
-    vertex(positions.bottom_lip[8][0] + -0.1 + this.slim, positions.bottom_lip[8][1] + -this.eyebrowSpike + 0.6 - this.tongueLength)
-    vertex(positions.bottom_lip[9][0], positions.bottom_lip[8][1] + -this.eyebrowSpike + 0.4 - this.tongueLength)
-    vertex(positions.bottom_lip[10][0] + 0.1 - this.slim, positions.bottom_lip[10][1] + -this.eyebrowSpike + 0.6 - this.tongueLength)
-    vertex(positions.bottom_lip[10][0] - this.slim, positions.bottom_lip[10][1] + -this.eyebrowSpike + 0.4 - this.tongueLength)
+    vertex(positions.bottom_lip[8][0] + 0 + this.slim, positions.bottom_lip[8][1] + 0.4 - this.tongueLength)
+    vertex(positions.bottom_lip[8][0] + -0.1 + this.slim, positions.bottom_lip[8][1] + 0.6 - this.tongueLength)
+    vertex(positions.bottom_lip[9][0], positions.bottom_lip[8][1]+ 0.4 - this.tongueLength)
+    vertex(positions.bottom_lip[10][0] + 0.1 - this.slim, positions.bottom_lip[10][1] + 0.6 - this.tongueLength)
+    vertex(positions.bottom_lip[10][0] - this.slim, positions.bottom_lip[10][1]  + 0.4 - this.tongueLength)
     vertex(positions.bottom_lip[10][0] - this.slim, positions.bottom_lip[10][1] + 0)
     endShape()
     pop()
@@ -140,34 +148,34 @@ function Face() {
     this.middleEyebrowRL = segment_average([positions.left_eyebrow[2], positions.left_eyebrow[3]])
     this.rightmostEyebrowL = segment_average([positions.left_eyebrow[3], positions.left_eyebrow[4]])
 
-    stroke(183, 183, 51)
+    noFill();
+    stroke(this.browColourArray[this.browcolor]);
     beginShape();
     vertex(positions.left_eyebrow[0][0], positions.left_eyebrow[0][1]);
-    curveVertex(positions.left_eyebrow[0][0], positions.left_eyebrow[0][1])
+    vertex(positions.left_eyebrow[0][0], positions.left_eyebrow[0][1])
 
-    curveVertex(this.leftmostEyebrowL[0], this.leftmostEyebrowL[1] + this.eyebrowSpike / 2)
-    curveVertex(this.leftmostEyebrowL[0], this.leftmostEyebrowL[1] + this.eyebrowSpike / 2)
+    vertex(this.leftmostEyebrowL[0], this.leftmostEyebrowL[1] + this.eyebrowSpike / 2)
+    
 
-    curveVertex(positions.left_eyebrow[1][0], positions.left_eyebrow[1][1])
-    curveVertex(positions.left_eyebrow[1][0], positions.left_eyebrow[1][1])
+    vertex(positions.left_eyebrow[1][0], positions.left_eyebrow[1][1])
+    
 
-    curveVertex(this.middleEyebrowLL[0], this.middleEyebrowLL[1] + this.eyebrowSpike / 2)
-    curveVertex(this.middleEyebrowLL[0], this.middleEyebrowLL[1] + this.eyebrowSpike / 2)
+    vertex(this.middleEyebrowLL[0], this.middleEyebrowLL[1] + this.eyebrowSpike / 2)
+    
 
-    curveVertex(positions.left_eyebrow[2][0], positions.left_eyebrow[2][1])
-    curveVertex(positions.left_eyebrow[2][0], positions.left_eyebrow[2][1])
+    vertex(positions.left_eyebrow[2][0], positions.left_eyebrow[2][1])
+    
 
-    curveVertex(this.middleEyebrowRL[0], this.middleEyebrowRL[1] + this.eyebrowSpike / 2)
-    curveVertex(this.middleEyebrowRL[0], this.middleEyebrowRL[1] + this.eyebrowSpike / 2)
+    vertex(this.middleEyebrowRL[0], this.middleEyebrowRL[1] + this.eyebrowSpike / 2)
+    
 
-    curveVertex(positions.left_eyebrow[3][0], positions.left_eyebrow[3][1])
-    curveVertex(positions.left_eyebrow[3][0], positions.left_eyebrow[3][1])
+    vertex(positions.left_eyebrow[3][0], positions.left_eyebrow[3][1])
+    
+    vertex(this.rightmostEyebrowL[0], this.rightmostEyebrowL[1] + this.eyebrowSpike / 2)
+    
 
-    curveVertex(this.rightmostEyebrowL[0], this.rightmostEyebrowL[1] + this.eyebrowSpike / 2)
-    curveVertex(this.rightmostEyebrowL[0], this.rightmostEyebrowL[1] + this.eyebrowSpike / 2)
-
-    curveVertex(positions.left_eyebrow[4][0], positions.left_eyebrow[4][1])
-    curveVertex(positions.left_eyebrow[4][0], positions.left_eyebrow[4][1])
+    vertex(positions.left_eyebrow[4][0], positions.left_eyebrow[4][1])
+    vertex(positions.left_eyebrow[4][0], positions.left_eyebrow[4][1])
     endShape();
 
     //------------------------------------------------------------right eyebrow-------------------------------------------------------------------------------
@@ -179,31 +187,25 @@ function Face() {
 
     beginShape();
     vertex(positions.right_eyebrow[0][0], positions.right_eyebrow[0][1]);
-    curveVertex(positions.right_eyebrow[0][0], positions.right_eyebrow[0][1])
+    vertex(positions.right_eyebrow[0][0], positions.right_eyebrow[0][1])
 
-    curveVertex(this.leftmostEyebrow[0], this.leftmostEyebrow[1] + this.eyebrowSpike / 2)
-    curveVertex(this.leftmostEyebrow[0], this.leftmostEyebrow[1] + this.eyebrowSpike / 2)
+    
+    vertex(this.leftmostEyebrow[0], this.leftmostEyebrow[1] + this.eyebrowSpike / 2)
 
-    curveVertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1])
-    curveVertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1])
+    vertex(positions.right_eyebrow[1][0], positions.right_eyebrow[1][1])
 
-    curveVertex(this.middleEyebrowL[0], this.middleEyebrowL[1] + this.eyebrowSpike / 2)
-    curveVertex(this.middleEyebrowL[0], this.middleEyebrowL[1] + this.eyebrowSpike / 2)
+    vertex(this.middleEyebrowL[0], this.middleEyebrowL[1] + this.eyebrowSpike / 2)
 
-    curveVertex(positions.right_eyebrow[2][0], positions.right_eyebrow[2][1])
-    curveVertex(positions.right_eyebrow[2][0], positions.right_eyebrow[2][1])
+    vertex(positions.right_eyebrow[2][0], positions.right_eyebrow[2][1])
 
-    curveVertex(this.middleEyebrowR[0], this.middleEyebrowR[1] + this.eyebrowSpike / 2)
-    curveVertex(this.middleEyebrowR[0], this.middleEyebrowR[1] + this.eyebrowSpike / 2)
+    vertex(this.middleEyebrowR[0], this.middleEyebrowR[1] + this.eyebrowSpike / 2)
 
-    curveVertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1])
-    curveVertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1])
+    vertex(positions.right_eyebrow[3][0], positions.right_eyebrow[3][1])
 
-    curveVertex(this.rightmostEyebrow[0], this.rightmostEyebrow[1] + this.eyebrowSpike / 2)
-    curveVertex(this.rightmostEyebrow[0], this.rightmostEyebrow[1] + this.eyebrowSpike / 2)
+    vertex(this.rightmostEyebrow[0], this.rightmostEyebrow[1] + this.eyebrowSpike / 2)
 
-    curveVertex(positions.right_eyebrow[4][0], positions.right_eyebrow[4][1])
-    curveVertex(positions.right_eyebrow[4][0], positions.right_eyebrow[4][1])
+    vertex(positions.right_eyebrow[4][0], positions.right_eyebrow[4][1])
+    vertex(positions.right_eyebrow[4][0], positions.right_eyebrow[4][1])
     endShape();
     //  
     //--------------------------------------------------------------snake mouth--------------------------------------------------------------------------------
@@ -434,8 +436,8 @@ function Face() {
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function (settings) {
     this.num_eyes = int(map(settings[0], 0, 100, 1, 2));
-    this.eye_shift = map(settings[1], 0, 100, -2, 6);
-    this.mouth_size = map(settings[2], 0, 100, 0.5, 8);
+    this.browcolor = int(map(settings[1], 0, 100, 0, 3));
+    this.tonguecolor = int(map(settings[2], 0, 100, 0, 1));
     this.pupilsize = map(settings[3], 0, 100, 0, 0.35);
     this.fangLength = map(settings[4], 0, 100, 1.4, 0.8);
     this.tongueLength = map(settings[5], 0, 100, 0.6, 0);
@@ -448,8 +450,8 @@ function Face() {
   this.getProperties = function () {
     let settings = new Array(8);
     settings[0] = map(this.num_eyes, 1, 2, 0, 100);
-    settings[1] = map(this.eye_shift, -2, 2, 0, 100);
-    settings[2] = map(this.mouth_size, 0.5, 8, 0, 100);
+    settings[1] = int(map(this.browcolor, 3, 0, 0, 100));
+    settings[2] = int(map(this.tonguecolor, 1, 0, 0, 100));
     settings[3] = map(this.pupilsize, 0, 0.35, 0, 100);
     settings[4] = map(this.fangLength, 0.8, 1.4, 0, 100);
     settings[5] = map(this.tongueLength, 0, 0.6, 0, 100);
